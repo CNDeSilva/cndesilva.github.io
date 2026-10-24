@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chamudi De Silva · Computational cognitive science</title>
+<meta name="description" content="Chamudi De Silva: research on how people understand language, and how far language models capture it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Nunito:wght@300;400;600&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f2ea;--ink:#25302b;--mute:#667269;--sage:#8aa18f;--sage-d:#4d6656;--rose:#d8a29d;--teal:#4a8789;--card:#fbf9f4;--line:#dcd6c8;
+--serif:"Fraunces",Georgia,serif;--sans:"Nunito",system-ui,sans-serif;--hand:"Caveat","Segoe Script",cursive}
+:root[data-theme=night]{--bg:#0e191c;--ink:#e6eee8;--mute:#9bb0a6;--sage:#7fa08d;--sage-d:#a9c7b5;--rose:#e0aaa4;--teal:#6fb5b6;--card:#15262a;--line:#264047}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:400 1.05rem/1.75 var(--sans);transition:background .6s,color .6s;overflow-x:hidden}
+a{color:var(--teal)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+#sky{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0;transition:opacity .8s}
+[data-theme=night] #sky{opacity:1}
+main,header,footer{position:relative;z-index:1}
+nav{display:flex;justify-content:flex-end;align-items:center;padding:1.2rem clamp(1.2rem,5vw,4rem)}
+nav .links{display:flex;gap:1.6rem;font-size:.95rem}
+nav a{text-decoration:none;color:var(--mute)}nav a:hover{color:var(--ink)}
+#mode{background:none;border:1px solid var(--line);color:var(--ink);border-radius:99px;padding:.35rem .9rem;font:inherit;font-size:.9rem;cursor:pointer}
+.hero{display:grid;grid-template-columns:1.4fr 1fr;gap:2rem;align-items:center;padding:2rem clamp(1.2rem,5vw,4rem) 0;max-width:1200px;margin:auto;min-height:78vh}
+.hero h1{font:400 clamp(3.2rem,8vw,6.6rem)/1 var(--serif);letter-spacing:-.02em;font-variation-settings:"SOFT" 100,"WONK" 1}
+.greet{font:700 clamp(2rem,4vw,3rem)/1.1 var(--hand);color:var(--sage-d);min-height:2.6rem;margin-bottom:.6rem}
+.greet span{display:inline-block;transition:opacity .5s,transform .5s}
+.greet .out{opacity:0;transform:translateY(8px)}
+.btns{display:flex;gap:.8rem;margin-top:2rem}.btn{display:inline-block;padding:.65rem 1.7rem;border:1px solid var(--sage-d);border-radius:99px;text-decoration:none;color:var(--sage-d);font-weight:400;transition:background .25s,color .25s}.btn:hover,.btn.pri{background:var(--sage-d);color:var(--bg)}.btn.pri:hover{background:transparent;color:var(--sage-d)}
+.lede{max-width:34rem;margin-top:1.6rem;color:var(--mute);font-size:1.1rem}
+.quote{margin-top:2rem;max-width:30rem;font:italic 400 1.35rem/1.45 var(--serif);border-left:2px solid var(--rose);padding-left:1rem}
+.portrait{position:relative;justify-self:center;align-self:center;cursor:pointer;width:min(100%,430px);aspect-ratio:4/5}
+.portrait svg,.portrait img{position:absolute;inset:0;width:100%;height:100%}
+.portrait img{left:-4%;width:108%;top:auto;bottom:0;height:auto;filter:drop-shadow(1.5px 0 0 var(--sage-d)) drop-shadow(-1.5px 0 0 var(--sage-d)) drop-shadow(0 -1.5px 0 var(--sage-d))}
+.portrait svg{overflow:visible;pointer-events:none}
+.leafA{color:var(--sage)}.leafB{color:var(--sage-d)}.fl{color:var(--rose)}.moon{fill:#ecdca4}.star{fill:#ecdca4}
+.spark{position:fixed;pointer-events:none;z-index:9;font-size:1rem;color:var(--rose);animation:rise 1.4s ease-out forwards}
+@keyframes rise{to{transform:translate(var(--dx),-90px) scale(.3) rotate(120deg);opacity:0}}
+section{max-width:1200px;margin:auto;padding:5rem clamp(1.2rem,5vw,4rem)}#mind{padding-top:6rem;padding-bottom:6rem}
+h2{font:400 clamp(2rem,4vw,3rem)/1.1 var(--serif);margin-bottom:.6rem}
+.sub{color:var(--mute);max-width:36rem}
+.brainwrap{display:block;margin-top:1.5rem}#mind>h2,#mind>.sub{text-align:center}#mind>.sub{margin:0 auto}
+#stage{position:relative;max-width:1040px;margin:0 auto;aspect-ratio:2.3/1;background:radial-gradient(circle at 50% 45%,color-mix(in srgb,var(--sage) 22%,transparent),transparent 68%)}
+#brain{width:100%;height:100%;display:block;cursor:grab;touch-action:pan-y}
+#brain:active{cursor:grabbing}
+#tip{position:absolute;pointer-events:none;background:var(--card);border:1px solid var(--line);padding:.2rem .7rem;border-radius:99px;font-size:.85rem;opacity:0;transition:opacity .15s}
+.hint{font-size:.9rem;color:var(--mute);margin-top:.4rem;text-align:center}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem;justify-content:center}
+.chip{border:1px solid var(--line);background:none;color:var(--ink);border-radius:99px;padding:.3rem .9rem;font:inherit;font-size:.9rem;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--sage-d);color:var(--bg);border-color:var(--sage-d)}
+#panel{--rc:var(--sage);background:rgba(222,236,222,.86);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:#25302b;border:2px solid color-mix(in srgb,var(--rc) 75%,#fff);border-radius:96px 18px 96px 18px;padding:3rem clamp(1.6rem,4vw,3.6rem) 2.8rem;max-width:900px;margin:1.6rem auto 0;min-height:18rem;box-shadow:0 22px 60px rgba(0,0,0,.28),0 0 40px -6px color-mix(in srgb,var(--rc) 55%,transparent)}
+#panel h3{font:400 clamp(2rem,3.4vw,2.8rem)/1.08 var(--serif);margin-bottom:.8rem}
+#panel .tag{display:inline-block;background:var(--rc);color:#1c2822;font:400 .88rem/1 var(--sans);padding:.45rem 1rem;border-radius:99px;margin-bottom:1.4rem}
+#panel p,#panel li{font-size:1.1rem;line-height:1.7;font-weight:400;color:#25302b}#panel h3{color:#1f2a25}#panel small{color:#55645b}#panel p{margin:.7rem 0}#panel .pubs p{margin:1rem 0}#panel .tag{margin-bottom:1rem}#panel small{font-size:.95rem}
+.band{margin-top:0;padding-top:6rem;background:linear-gradient(to bottom,var(--bg) 0,color-mix(in srgb,var(--bg) 55%,transparent) 12rem,transparent 32rem),radial-gradient(ellipse at 50% 18%,#2f8a82 0%,#1f6764 45%,#154848 100%) ;color:#f3f0e6}
+:root[data-theme=night] .band{background:linear-gradient(to bottom,var(--bg) 0,color-mix(in srgb,var(--bg) 55%,transparent) 12rem,transparent 32rem),radial-gradient(ellipse at 50% 18%,#14474b 0%,#0c2f33 50%,#071d20 100%)}
+.band h2,.band .note p,.band .note h3{color:#f6f3ea}
+.band .sub,.band .hint{color:#d3e6e1}
+.band #tip{color:#1c2822}.band a{color:#b4ece1}.band #nb{color:#d6ebe5}.band #nb cite{color:#a9e0d3}.band .copy{color:#b9d6cf}.band footer{border-top-color:rgba(255,255,255,.18)}
+.band #stage{background:none}
+#panel ul{padding-left:1.1rem}#panel li{margin:.5rem 0}
+#panel b{font-weight:600}
+#panel small{color:var(--mute)}
+.note{max-width:42rem;margin:4.5rem auto 0;text-align:center}.note h3{font:400 1.9rem/1.1 var(--serif);margin-bottom:.9rem}.note h3::after{content:"";display:block;width:3rem;height:2px;background:var(--rose);margin:.8rem auto 0}.note p{font:400 1.2rem/1.7 var(--serif);color:var(--ink)}
+.pop{animation:pop .45s ease}
+@keyframes pop{from{opacity:.2;transform:translateY(6px)}}
+.pubs li{margin:.8rem 0}
+footer{padding:4rem clamp(1.2rem,5vw,4rem) 1.2rem;text-align:center;border-top:1px solid var(--line);max-width:1200px;margin:auto}
+footer .big{font:500 2.1rem/1.2 var(--hand);margin-bottom:.8rem}
+#nb{font:500 1.9rem/1.3 var(--hand);color:var(--mute);margin:2.2rem auto 0;max-width:34rem;min-height:5rem;transition:opacity .6s}#nb cite{display:block;font:400 .95rem var(--sans);font-style:normal;margin-top:.4rem;color:var(--sage-d)}.copy{margin-top:2.5rem;font-size:.85rem;color:var(--mute)}
+
+:root{--g1:#1e6e5f;--g2:#145449;--g3:#0c3b36}
+:root[data-theme=night]{--g1:#103c3b;--g2:#0a2b2b;--g3:#061e1f}
+.garden{position:relative;height:clamp(220px,24vw,310px);margin-top:.5rem;overflow:hidden;cursor:cell;touch-action:manipulation}
+.garden svg,.garden canvas{position:absolute;inset:0;width:100%;height:100%}.garden canvas{pointer-events:none}
+.h1{fill:var(--g1)}.h2{fill:var(--g2)}.h3{fill:var(--g3)}
+.plant{transform-box:fill-box;transform-origin:50% 100%}
+.plant:hover{animation:sway 1s ease-in-out}
+@keyframes sway{25%{transform:rotate(7deg)}75%{transform:rotate(-7deg)}}
+.grow{animation:grow .9s cubic-bezier(.2,1.4,.4,1) both}.grow:hover{animation:sway 1s}
+@keyframes grow{from{transform:scale(0)}}
+.toad{transform-box:fill-box;transform-origin:50% 100%}.toad:hover{filter:drop-shadow(0 0 8px #ffd9de);animation:sway 1s}
+.hid{cursor:pointer;fill:#ffe9a8;filter:drop-shadow(0 0 5px #ffe9a8);animation:tw 2.4s ease-in-out infinite}
+.hid.found{animation:none;fill:#fff3c4;filter:drop-shadow(0 0 10px #ffd86b) drop-shadow(0 0 3px #fff)}
+@keyframes tw{50%{opacity:.3}}
+.gcount{position:absolute;top:.2rem;left:0;right:0;text-align:center;font:500 1.2rem var(--hand);color:#d3ece4;pointer-events:none;z-index:2;padding:0 1rem}
+@media(max-width:820px){#panel{border-radius:56px 14px 56px 14px}#stage{aspect-ratio:1/.95}.hero{grid-template-columns:1fr}.portrait{width:min(88%,360px)}nav .links{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+<header>
+<nav>
+  <button id="mode" aria-label="Switch between day and night">Night</button>
+</nav>
+</header>
+<main>
+<div class="hero">
+  <div>
+    <p class="greet" aria-live="off"><span id="hello">Hello</span>, I’m</p>
+    <h1>Chamudi De&nbsp;Silva</h1>
+    <p class="lede">I study how people understand language, and how far language models capture what we mean beyond what we say. I want to build AI that is more human, and more human-centred.</p>
+    <p class="btns"><a class="btn pri" href="#mind">Explore</a><a class="btn" href="cndesilva.pdf" target="_blank" rel="noopener">My CV</a></p>
+  </div>
+  <div class="portrait" id="portrait" title="Try clicking me">
+    <svg viewBox="0 0 400 500" aria-hidden="true">
+      <defs>
+        <symbol id="lf" viewBox="0 0 40 80"><path d="M20 78C2 55 4 20 20 2c16 18 18 53 0 76z" fill="currentColor"/><path d="M20 74V12" stroke="#fff" stroke-opacity=".4" stroke-width="1.5" fill="none"/></symbol>
+        <symbol id="fw" viewBox="-22 -22 44 44"><g fill="currentColor"><ellipse cx="0" cy="-10" rx="6.5" ry="10"/><ellipse cx="0" cy="-10" rx="6.5" ry="10" transform="rotate(72)"/><ellipse cx="0" cy="-10" rx="6.5" ry="10" transform="rotate(144)"/><ellipse cx="0" cy="-10" rx="6.5" ry="10" transform="rotate(216)"/><ellipse cx="0" cy="-10" rx="6.5" ry="10" transform="rotate(288)"/></g><circle r="4.5" fill="#f3e2a3"/></symbol>
+        <symbol id="st" viewBox="-9 -9 18 18"><path d="M0-8 2-2 8 0 2 2 0 8-2 2-8 0-2-2z"/></symbol>
+      </defs>
+      <path class="moon" d="M318 38a40 40 0 1 0 40 66a33 33 0 1 1-40-66z"/>
+      <use class="star" href="#st" x="40" y="60" width="18" height="18"/><use class="star" href="#st" x="250" y="30" width="12" height="12"/><use class="star" href="#st" x="372" y="170" width="14" height="14"/><use class="star" href="#st" x="14" y="190" width="12" height="12"/><use class="star" href="#st" x="110" y="22" width="10" height="10"/>
+      <use class="leafA" href="#lf" x="-6" y="250" width="70" height="140" transform="rotate(-48 29 390)"/>
+      <use class="leafB" href="#lf" x="8" y="300" width="56" height="112" transform="rotate(-22 36 412)"/>
+      <use class="leafA" href="#lf" x="342" y="230" width="70" height="140" transform="rotate(50 377 370)"/>
+      <use class="leafB" href="#lf" x="346" y="300" width="56" height="112" transform="rotate(24 374 412)"/>
+      <use class="fl" href="#fw" x="6" y="212" width="46" height="46"/><use class="fl" href="#fw" x="352" y="196" width="40" height="40"/>
+    </svg>
+    <img src="portrait.png" alt="Portrait of Chamudi De Silva in a sage-green saree" width="1145" height="1374">
+    <svg viewBox="0 0 400 500" aria-hidden="true">
+      <ellipse cx="200" cy="512" rx="235" ry="34" fill="var(--sage-d)"/>
+      <use class="leafB" href="#lf" x="10" y="410" width="52" height="104" transform="rotate(-38 36 514)"/>
+      <use class="leafA" href="#lf" x="70" y="418" width="50" height="100" transform="rotate(-12 95 518)"/>
+      <use class="leafB" href="#lf" x="150" y="424" width="48" height="96" transform="rotate(-4 174 520)"/>
+      <use class="leafA" href="#lf" x="228" y="418" width="50" height="100" transform="rotate(14 253 518)"/>
+      <use class="leafB" href="#lf" x="300" y="412" width="52" height="104" transform="rotate(36 326 516)"/>
+      <use class="fl" href="#fw" x="48" y="440" width="38" height="38"/><use class="fl" href="#fw" x="190" y="452" width="34" height="34"/><use class="fl" href="#fw" x="318" y="438" width="40" height="40"/>
+    </svg>
+  </div>
+</div>
+
+<div class="band"><section id="mind">
+  <h2>Explore my mind</h2>
+  <p class="sub">Seven regions, seven parts of my work. Drag to turn the brain, then click a glowing region to open it. The left hemisphere holds the research, the right holds what I love.</p>
+  <div class="brainwrap">
+    <div>
+      <div id="stage"><canvas id="brain" tabindex="0" aria-label="Interactive 3D brain. Press the left and right arrow keys to rotate it, and the number keys 1 to 7 to open each section."></canvas><div id="tip"></div></div>
+      <p class="hint">Drag to rotate · click a region or its label</p>
+    </div>
+    <article id="panel" aria-live="polite"></article>
+  </div>
+  <div class="note">
+    <h3>How I think</h3>
+    <p>I want to understand how a mind makes meaning: how we hear a sentence and know what was meant, and how far a model can come to do the same. I come to that question with calm and curiosity, and I try to look at people, and at hard problems, with a quiet optimism. What I hope to build is AI that understands us a little more the way a thoughtful person does.</p>
+  </div>
+</section>
+<footer id="contact">
+  <p class="big">Let’s talk about language, minds and machines.</p>
+  <p><a href="mailto:chamudids@gmail.com">chamudids@gmail.com</a> · <a href="#" id="li">LinkedIn</a> · <a href="cndesilva.pdf">CV (PDF)</a></p>
+  <p id="nb"></p>
+  <p class="copy">© 2026 Chamudi De Silva</p>
+</footer>
+<div class="garden" id="garden">
+  <svg id="gsvg" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs><symbol id="ts" viewBox="0 0 40 40"><rect x="16" y="22" width="8" height="15" rx="3.5" fill="#f3e8d6"/><path d="M3 24a17 15 0 0 1 34 0z" fill="#e0818a"/><circle cx="13" cy="18" r="2.2" fill="#fff"/><circle cx="23" cy="13" r="2.4" fill="#fff"/><circle cx="29" cy="20" r="1.8" fill="#fff"/></symbol></defs>
+    <path class="h1" d="M0 150C200 105 380 170 600 135S1000 105 1200 150V300H0Z"/>
+    <path class="h2" d="M0 205C250 160 450 225 700 192S1050 170 1200 205V300H0Z"/>
+    <path class="h3" d="M0 252C300 226 500 266 800 242S1100 236 1200 252V300H0Z"/>
+    <g id="plants"></g>
+  </svg>
+  <canvas id="gfly" aria-hidden="true"></canvas>
+</div></div>
+</main>
+
+
+<script>
+/* ---------- content ---------- */
+const R={
+ lang:{name:"Broca’s and Wernicke’s areas",tag:"Research interests",col:[140,214,205],html:`
+  <p>I’m drawn to how humans resolve meaning from context, and to researching whether language models can do something similar.</p>
+  <ul><li>Computational cognitive science and computational linguistics</li>
+  <li>Pragmatics: modelling how people understand what is meant, and using models of human learning to improve pragmatic understanding in AI</li>
+  <li>LLM evaluation: what cognitive models reveal about how far LLMs capture context</li>
+  <li>Human-centred AI, with a long-term aim of reverse engineering social intelligence</li></ul>`},
+ front:{name:"Frontal lobe",tag:"Research & publications",col:[225,155,145],html:`
+  <div class="pubs">
+  <p><b>Shades of Sentiment: Evaluating Emotional Fairness Across Ethnic Identities in LLMs.</b><br>Kekulandara, De Silva, Dayaratna. ISBM 2026 <small>(accepted)</small>. Audited seven LLMs and found skew toward male and Global North personas, and stereotyping in every model. Repeated prompting amplified bias.</p>
+  <p><b>Is More Explanation Better? Combined XAI Techniques for Regression.</b><br>De Silva, Kekulandara, Dayaratna. IEEE ICAC 2026 <small>(under review)</small>. Compared SHAP, DiCE, Anchors and ProtoDash, alone and combined.</p>
+  <p><b>Hybrid Continual and Reinforcement Learning for Adaptive Companionship.</b><br>De Silva, Nawarathna. <small>(in preparation)</small>. A companion agent that adapts to each user’s persona and emotions.</p></div>
+  <p><small>Ongoing: physics-informed ML for fMRI hemodynamics · EEG correlates of creativity, personality and vocational interest · ethnically equitable emotional intelligence in LLM agents.</small></p>`},
+ par:{name:"Parietal lobe",tag:"Education & coursework",col:[160,150,200],html:`
+  <p><b>BSc (Hons) Computer Science, minor in Statistics</b><br>University of Peradeniya, 2021–2025<br>CGPA 3.55/4.00, Second Class Upper. 3.73 over the most recent 60 graded credits.</p>
+  <p><b>Computer science:</b> artificial intelligence, neural networks and deep learning, machine learning, design and analysis of algorithms, distributed systems.</p>
+  <p><b>Statistics:</b> statistical data mining, sampling techniques, probability theory, non-parametric and categorical data analysis.</p>`},
+ teach:{name:"Prefrontal cortex",tag:"Teaching",col:[110,160,200],html:`
+  <p><b>Teaching Assistant</b><br>Dept. of Statistics and Computer Science, University of Peradeniya. Jan 2026 to present.</p>
+  <ul><li>Run weekly programming labs for 200+ undergraduates</li>
+  <li>Teach introductory C and Python</li>
+  <li>Give substitute lectures in Operating Systems Concepts</li>
+  <li>Develop and evaluate instructional materials and assessments</li></ul>`},
+ occ:{name:"Occipital lobe",tag:"How I see me",col:[160,205,130],html:`
+  <p>I see myself as someone still growing in many directions at once, calm about it, and curious where each branch leads. Language, minds, poetry, nature, teaching and travel are all branches of one tree.</p>
+  <svg viewBox="0 -28 600 328" role="img" aria-label="A fig tree whose figs are labelled language, the mind, poetry, nature, teaching and travel" style="width:100%;max-width:560px;display:block;margin:1rem auto .2rem"><path d="M300 292C296 240 304 200 298 140" stroke="#6b4f3a" stroke-width="15" stroke-linecap="round" fill="none"/><path d="M299 205C250 175 190 150 120 100" stroke="#6b4f3a" stroke-width="6" stroke-linecap="round" fill="none"/><path d="M299 180C340 145 400 130 480 90" stroke="#6b4f3a" stroke-width="6" stroke-linecap="round" fill="none"/><path d="M298 150C280 110 250 80 220 40" stroke="#6b4f3a" stroke-width="6" stroke-linecap="round" fill="none"/><path d="M300 142C320 100 350 70 380 38" stroke="#6b4f3a" stroke-width="6" stroke-linecap="round" fill="none"/><path d="M299 225C230 218 170 205 90 190" stroke="#6b4f3a" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M300 220C370 214 440 202 520 182" stroke="#6b4f3a" stroke-width="5" stroke-linecap="round" fill="none"/><ellipse cx="93" cy="76" rx="17" ry="8" transform="rotate(71 93 76)" fill="#6f9a63"/><ellipse cx="77" cy="71" rx="17" ry="8" transform="rotate(99 77 71)" fill="#88b377"/><ellipse cx="151" cy="113" rx="17" ry="8" transform="rotate(40 151 113)" fill="#58854f"/><ellipse cx="105" cy="114" rx="17" ry="8" transform="rotate(149 105 114)" fill="#88b377"/><ellipse cx="90" cy="122" rx="17" ry="8" transform="rotate(149 90 122)" fill="#88b377"/><ellipse cx="151" cy="81" rx="17" ry="8" transform="rotate(56 151 81)" fill="#58854f"/><ellipse cx="158" cy="124" rx="17" ry="8" transform="rotate(153 158 124)" fill="#88b377"/><ellipse cx="77" cy="104" rx="17" ry="8" transform="rotate(121 77 104)" fill="#58854f"/><ellipse cx="94" cy="84" rx="17" ry="8" transform="rotate(50 94 84)" fill="#58854f"/><ellipse cx="515" cy="60" rx="17" ry="8" transform="rotate(53 515 60)" fill="#58854f"/><ellipse cx="520" cy="107" rx="17" ry="8" transform="rotate(92 520 107)" fill="#88b377"/><ellipse cx="472" cy="76" rx="17" ry="8" transform="rotate(81 472 76)" fill="#6f9a63"/><ellipse cx="460" cy="106" rx="17" ry="8" transform="rotate(8 460 106)" fill="#6f9a63"/><ellipse cx="476" cy="116" rx="17" ry="8" transform="rotate(93 476 116)" fill="#58854f"/><ellipse cx="477" cy="79" rx="17" ry="8" transform="rotate(180 477 79)" fill="#6f9a63"/><ellipse cx="435" cy="111" rx="17" ry="8" transform="rotate(114 435 111)" fill="#88b377"/><ellipse cx="457" cy="80" rx="17" ry="8" transform="rotate(134 457 80)" fill="#88b377"/><ellipse cx="494" cy="71" rx="17" ry="8" transform="rotate(58 494 71)" fill="#6f9a63"/><ellipse cx="242" cy="26" rx="17" ry="8" transform="rotate(105 242 26)" fill="#6f9a63"/><ellipse cx="181" cy="62" rx="17" ry="8" transform="rotate(52 181 62)" fill="#6f9a63"/><ellipse cx="172" cy="49" rx="17" ry="8" transform="rotate(161 172 49)" fill="#88b377"/><ellipse cx="244" cy="64" rx="17" ry="8" transform="rotate(3 244 64)" fill="#88b377"/><ellipse cx="201" cy="19" rx="17" ry="8" transform="rotate(117 201 19)" fill="#58854f"/><ellipse cx="239" cy="14" rx="17" ry="8" transform="rotate(111 239 14)" fill="#88b377"/><ellipse cx="198" cy="24" rx="17" ry="8" transform="rotate(108 198 24)" fill="#6f9a63"/><ellipse cx="202" cy="11" rx="17" ry="8" transform="rotate(8 202 11)" fill="#6f9a63"/><ellipse cx="206" cy="55" rx="17" ry="8" transform="rotate(179 206 55)" fill="#58854f"/><ellipse cx="338" cy="63" rx="17" ry="8" transform="rotate(76 338 63)" fill="#6f9a63"/><ellipse cx="340" cy="11" rx="17" ry="8" transform="rotate(133 340 11)" fill="#58854f"/><ellipse cx="398" cy="16" rx="17" ry="8" transform="rotate(7 398 16)" fill="#88b377"/><ellipse cx="389" cy="26" rx="17" ry="8" transform="rotate(6 389 26)" fill="#58854f"/><ellipse cx="358" cy="64" rx="17" ry="8" transform="rotate(117 358 64)" fill="#6f9a63"/><ellipse cx="378" cy="22" rx="17" ry="8" transform="rotate(74 378 22)" fill="#6f9a63"/><ellipse cx="351" cy="33" rx="17" ry="8" transform="rotate(117 351 33)" fill="#88b377"/><ellipse cx="414" cy="36" rx="17" ry="8" transform="rotate(6 414 36)" fill="#88b377"/><ellipse cx="354" cy="37" rx="17" ry="8" transform="rotate(139 354 37)" fill="#88b377"/><ellipse cx="128" cy="168" rx="17" ry="8" transform="rotate(9 128 168)" fill="#88b377"/><ellipse cx="97" cy="215" rx="17" ry="8" transform="rotate(73 97 215)" fill="#58854f"/><ellipse cx="106" cy="204" rx="17" ry="8" transform="rotate(134 106 204)" fill="#88b377"/><ellipse cx="78" cy="184" rx="17" ry="8" transform="rotate(167 78 184)" fill="#58854f"/><ellipse cx="132" cy="212" rx="17" ry="8" transform="rotate(61 132 212)" fill="#58854f"/><ellipse cx="87" cy="210" rx="17" ry="8" transform="rotate(57 87 210)" fill="#88b377"/><ellipse cx="93" cy="197" rx="17" ry="8" transform="rotate(123 93 197)" fill="#88b377"/><ellipse cx="73" cy="182" rx="17" ry="8" transform="rotate(89 73 182)" fill="#88b377"/><ellipse cx="138" cy="197" rx="17" ry="8" transform="rotate(8 138 197)" fill="#58854f"/><ellipse cx="481" cy="206" rx="17" ry="8" transform="rotate(120 481 206)" fill="#6f9a63"/><ellipse cx="558" cy="191" rx="17" ry="8" transform="rotate(84 558 191)" fill="#88b377"/><ellipse cx="546" cy="204" rx="17" ry="8" transform="rotate(39 546 204)" fill="#6f9a63"/><ellipse cx="490" cy="161" rx="17" ry="8" transform="rotate(110 490 161)" fill="#88b377"/><ellipse cx="480" cy="197" rx="17" ry="8" transform="rotate(141 480 197)" fill="#6f9a63"/><ellipse cx="525" cy="201" rx="17" ry="8" transform="rotate(36 525 201)" fill="#58854f"/><ellipse cx="531" cy="198" rx="17" ry="8" transform="rotate(101 531 198)" fill="#88b377"/><ellipse cx="563" cy="177" rx="17" ry="8" transform="rotate(14 563 177)" fill="#58854f"/><ellipse cx="530" cy="179" rx="17" ry="8" transform="rotate(156 530 179)" fill="#58854f"/><ellipse cx="120" cy="100" rx="10" ry="12" fill="#7b4b7f"/><ellipse cx="117" cy="96" rx="3" ry="4" fill="#fff" opacity=".25"/><text x="120" y="130" text-anchor="middle" font-family="Caveat,cursive" font-size="19" font-weight="700" fill="#25302b" stroke="#dcebdc" stroke-width="4" paint-order="stroke" stroke-linejoin="round">language</text><ellipse cx="480" cy="90" rx="10" ry="12" fill="#7b4b7f"/><ellipse cx="477" cy="86" rx="3" ry="4" fill="#fff" opacity=".25"/><text x="480" y="120" text-anchor="middle" font-family="Caveat,cursive" font-size="19" font-weight="700" fill="#25302b" stroke="#dcebdc" stroke-width="4" paint-order="stroke" stroke-linejoin="round">the mind</text><ellipse cx="220" cy="40" rx="10" ry="12" fill="#7b4b7f"/><ellipse cx="217" cy="36" rx="3" ry="4" fill="#fff" opacity=".25"/><text x="220" y="70" text-anchor="middle" font-family="Caveat,cursive" font-size="19" font-weight="700" fill="#25302b" stroke="#dcebdc" stroke-width="4" paint-order="stroke" stroke-linejoin="round">poetry</text><ellipse cx="380" cy="38" rx="10" ry="12" fill="#7b4b7f"/><ellipse cx="377" cy="34" rx="3" ry="4" fill="#fff" opacity=".25"/><text x="380" y="68" text-anchor="middle" font-family="Caveat,cursive" font-size="19" font-weight="700" fill="#25302b" stroke="#dcebdc" stroke-width="4" paint-order="stroke" stroke-linejoin="round">nature</text><ellipse cx="90" cy="190" rx="10" ry="12" fill="#7b4b7f"/><ellipse cx="87" cy="186" rx="3" ry="4" fill="#fff" opacity=".25"/><text x="90" y="220" text-anchor="middle" font-family="Caveat,cursive" font-size="19" font-weight="700" fill="#25302b" stroke="#dcebdc" stroke-width="4" paint-order="stroke" stroke-linejoin="round">teaching</text><ellipse cx="520" cy="182" rx="10" ry="12" fill="#7b4b7f"/><ellipse cx="517" cy="178" rx="3" ry="4" fill="#fff" opacity=".25"/><text x="520" y="212" text-anchor="middle" font-family="Caveat,cursive" font-size="19" font-weight="700" fill="#25302b" stroke="#dcebdc" stroke-width="4" paint-order="stroke" stroke-linejoin="round">travel</text></svg>
+  <p><small>A fig tree: each fig is a future I could grow into.</small></p>`},
+ cer:{name:"Cerebellum",tag:"Leadership & coordination",col:[205,170,110],html:`
+  <ul><li><b>Inaugural Assistant Secretary</b>, IEEE Computer Society Student Chapter, Peradeniya, 2024–25</li>
+  <li><b>Editor</b>, Computer Society of the University of Peradeniya, 2024–25</li>
+  <li><b>Chief Editor</b>, Leo Club of the University of Peradeniya, 2023–24. Led a trilingual editorial team.</li>
+  <li><b>Organising committee</b>, Student Academic Advisory Committee, 2022–26. Workshops and orientation for incoming Science students.</li></ul>`},
+ right:{name:"Right hemisphere",tag:"What I love",col:[218,150,170],html:`
+  <p>Where I feel most like myself: poetry, solace in nature, the night, a fantasy garden, a little magic.</p>
+  <ul><li><b>Poetry and fiction.</b> Mary Oliver, and novels in English and Sinhala.</li>
+  <li><b>Languages.</b> Learning Spanish and Korean, one lesson at a time.</li>
+  <li><b>Travel.</b> Singapore and Bali so far. Thailand, Japan, China and South Korea next.</li></ul>`}
+};
+const order=["lang","front","teach","par","occ","cer","right"];
+const panel=document.getElementById("panel");
+let cur=null;
+function show(k){cur=k;const r=R[k];panel.style.setProperty("--rc",`rgb(${r.col})`);panel.innerHTML=`<h3>${r.tag}</h3><p class="tag">${r.name}</p>${r.html}`;panel.classList.remove("pop");void panel.offsetWidth;panel.classList.add("pop");
+}
+show("lang");
+
+/* ---------- greetings ---------- */
+const hi=["Hello","ආයුබෝවන්","வணக்கம்","Hola","안녕하세요"],he=document.getElementById("hello");let hi_i=0;
+setInterval(()=>{he.classList.add("out");setTimeout(()=>{hi_i=(hi_i+1)%hi.length;he.textContent=hi[hi_i];he.classList.remove("out")},500)},2600);
+
+/* ---------- theme ---------- */
+const root=document.documentElement,mb=document.getElementById("mode");
+function setTheme(t){root.dataset.theme=t;mb.textContent=t==="night"?"Day":"Night";try{localStorage.setItem("th",t)}catch(e){}}
+let saved=null;try{saved=localStorage.getItem("th")}catch(e){}
+setTheme(saved||"day");
+mb.onclick=()=>setTheme(root.dataset.theme==="night"?"day":"night");
+
+/* ---------- notebook quotes (add yours here) ---------- */
+/* Replace or add quotes here: ["quote text", "Author"]. Keep each one short. */
+const Q=[
+ ["How can I accept a limited definable self when I feel, in me, all possibilities?",""],
+ ["It’s the possibility of having a dream come true that makes life interesting.","Paulo Coelho, The Alchemist"],
+ ["Believe there is a great power silently working all things for good, behave yourself and never be afraid.","Beatrix Potter"]
+ /* Mary Oliver: paste your line here as ["…","Mary Oliver"], */
+];
+const nb=document.getElementById("nb");let qi=0;
+function setQ(){const [t,a]=Q[qi];nb.innerHTML="";const q=document.createElement("span");q.textContent="“"+t+"”";nb.appendChild(q);if(a){const c=document.createElement("cite");c.textContent=a;nb.appendChild(c)}}
+setQ();
+setInterval(()=>{nb.style.opacity=0;setTimeout(()=>{qi=(qi+1)%Q.length;setQ();nb.style.opacity=1},600)},6500);
+
+/* ---------- sparkles on portrait ---------- */
+document.getElementById("portrait").addEventListener("click",e=>{
+ for(let i=0;i<9;i++){const s=document.createElement("span");s.className="spark";s.textContent=["✦","✧","·","❀"][i%4];
+  s.style.left=e.clientX+"px";s.style.top=e.clientY+"px";s.style.setProperty("--dx",(Math.random()*120-60)+"px");
+  document.body.appendChild(s);setTimeout(()=>s.remove(),1500)}});
+
+/* ---------- night sky: stars + fireflies ---------- */
+(function(){const c=document.getElementById("sky"),x=c.getContext("2d");let W,H,st=[],ff=[];
+ function size(){W=c.width=innerWidth;H=c.height=innerHeight;st=Array.from({length:110},()=>({x:Math.random()*W,y:Math.random()*H*.8,r:Math.random()*1.2+.2,p:Math.random()*6}));
+  ff=Array.from({length:18},()=>({x:Math.random()*W,y:H*.4+Math.random()*H*.6,a:Math.random()*6,s:.2+Math.random()*.4}))}
+ size();addEventListener("resize",size);
+ const still=matchMedia("(prefers-reduced-motion:reduce)").matches;
+ (function f(t){if(root.dataset.theme==="night"){x.clearRect(0,0,W,H);
+  st.forEach(s=>{x.fillStyle=`rgba(255,255,240,${.35+.35*Math.sin(t/900+s.p)})`;x.beginPath();x.arc(s.x,s.y,s.r,0,7);x.fill()});
+  ff.forEach(o=>{if(!still){o.a+=.01;o.x+=Math.cos(o.a)*o.s;o.y+=Math.sin(o.a*1.3)*o.s}
+   const g=x.createRadialGradient(o.x,o.y,0,o.x,o.y,9),al=.45+.45*Math.sin(t/600+o.a*3);
+   g.addColorStop(0,`rgba(245,230,150,${al})`);g.addColorStop(1,"rgba(245,230,150,0)");x.fillStyle=g;x.beginPath();x.arc(o.x,o.y,9,0,7);x.fill()})}
+  requestAnimationFrame(f)})(0)})();
+
+/* ---------- 3D brain (no libraries) ---------- */
+(function(){
+ const cv=document.getElementById("brain"),ctx=cv.getContext("2d"),tip=document.getElementById("tip"),stage=document.getElementById("stage");
+ const P=[];
+ function region(x,y,z,cer){
+  if(cer)return"cer";
+  if(z<-.55)return"occ";
+  if(x<0)return"right";
+  if((y<.08&&z>-.35)||(z>.35&&y<.3))return"lang";
+  if(z>.62)return"teach";
+  if(z>.3)return"front";
+  return"par";}
+ // cerebrum
+ const N=5200,ga=Math.PI*(3-Math.sqrt(5));
+ for(let i=0;i<N;i++){
+  const v=1-2*(i+.5)/N,rr=Math.sqrt(1-v*v),th=i*ga;
+  let ux=Math.cos(th)*rr,uy=v,uz=Math.sin(th)*rr;
+  let x=ux*.78,y=uy*(uy<0?.46:.66),z=uz*1.02;
+  if(uy<.1&&uy>-.6&&uz>-.3&&uz<.7)x*=1+.22*Math.sin(Math.PI*(uy+.6)/.7)*Math.max(0,1-Math.abs(uz-.2)*1.6); // temporal bulge
+  if(uy>0)y-=.09*Math.exp(-Math.pow(x/.07,2)); // longitudinal fissure
+  const n=Math.sin(12*ux+3*uy)*Math.sin(10*uy+2*uz)*Math.sin(11*uz+ux*2);
+  const d=1+.05*n;x*=d;y*=d;z*=d;
+  if(uy<-.78)continue; // flat base
+  P.push({x,y,z,sh:n,k:region(x,y,z,false)});
+ }
+ // cerebellum
+ for(let i=0;i<900;i++){
+  const v=1-2*(i+.5)/900,rr=Math.sqrt(1-v*v),th=i*ga;
+  const ux=Math.cos(th)*rr,uy=v,uz=Math.sin(th)*rr;
+  const n=Math.sin(34*uy);
+  P.push({x:ux*.42*(1+.02*n),y:-.43+uy*.2*(1+.04*n),z:-.66+uz*.3,sh:n,k:"cer"});
+ }
+ // brain stem
+ for(let i=0;i<120;i++){const t=Math.random(),a=Math.random()*6.28;P.push({x:Math.cos(a)*.09,y:-.4-t*.38,z:-.12-t*.12+Math.sin(a)*.09,sh:0,k:"cer"});}
+ let yaw=-1.2,pit=.12,vy=.004,drag=false,moved=0,lx=0,ly=0,hov=null,W=0,H=0,sc=1,DPR=1;
+ function fit(){DPR=devicePixelRatio||1;W=cv.clientWidth;H=cv.clientHeight;cv.width=W*DPR;cv.height=H*DPR;sc=Math.min(W/(W<560?2.6:3.7),H/1.75)}
+ fit();addEventListener("resize",fit);
+ let proj=[],labels=[];
+ function draw(){
+  ctx.setTransform(DPR,0,0,DPR,0,0);ctx.clearRect(0,0,W,H);
+  const cy=Math.cos(yaw),sy=Math.sin(yaw),cp=Math.cos(pit),sp=Math.sin(pit);proj=[];
+  for(const p of P){
+   let x=p.x*cy-p.z*sy,z=p.x*sy+p.z*cy,y=p.y;
+   const y2=y*cp-z*sp,z2=y*sp+z*cp;
+   proj.push({X:W/2+x*sc,Y:H/2-y2*sc+sc*.03,Z:z2,p});}
+  proj.sort((a,b)=>a.Z-b.Z);
+  const night=root.dataset.theme==="night";
+  for(const q of proj){
+   if(q.Z<-.25)continue;
+   const c=R[q.p.k].col,on=(hov===q.p.k)||(cur===q.p.k);
+   const lit=.55+.35*q.Z+.18*q.p.sh+(on?.28:0);
+   const m=Math.max(.25,Math.min(1.25,lit)),base=night?1.05:.95;
+   ctx.fillStyle=`rgb(${Math.min(255,c[0]*m*base)|0},${Math.min(255,c[1]*m*base)|0},${Math.min(255,c[2]*m*base)|0})`;
+   ctx.beginPath();ctx.arc(q.X,q.Y,sc*.0165+(on?.6:0),0,7);ctx.fill();}
+  const acc={};for(const q of proj){if(q.Z<.12)continue;const a=acc[q.p.k]||(acc[q.p.k]={x:0,y:0,n:0});a.x+=q.X;a.y+=q.Y;a.n++}
+  const fs=W<560?11:14,ph=fs+14,items=[];labels=[];
+  ctx.font="600 "+fs+"px Nunito,system-ui,sans-serif";ctx.textBaseline="middle";
+  for(const k of order){const a=acc[k];if(!a||a.n<70)continue;const cx0=a.x/a.n,cy0=a.y/a.n;items.push({k,cx0,cy0,side:cx0>=W/2?1:-1,w:ctx.measureText(R[k].tag).width+24})}
+  for(const side of[-1,1]){const g=items.filter(i=>i.side===side).sort((a,b)=>a.cy0-b.cy0);let prev=-1e9;
+   for(const it of g){const ly=Math.max(it.cy0,prev+ph+8,ph/2+4);prev=ly;
+    const edge=W/2+side*sc*1.1;let x=side>0?edge:edge-it.w;x=Math.max(4,Math.min(W-it.w-4,x));
+    const y=Math.min(ly,H-ph/2-4),on=(hov===it.k)||(cur===it.k),c=R[it.k].col;
+    ctx.strokeStyle="rgba(255,255,255,.6)";ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(it.cx0,it.cy0);ctx.lineTo(side>0?x:x+it.w,y);ctx.stroke();
+    ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(it.cx0,it.cy0,3,0,7);ctx.fill();
+    ctx.fillStyle=`rgb(${c})`;ctx.beginPath();ctx.roundRect(x,y-ph/2,it.w,ph,ph/2);ctx.fill();
+    if(on){ctx.strokeStyle="#fff";ctx.lineWidth=2.5;ctx.stroke()}
+    ctx.fillStyle="#18241f";ctx.fillText(R[it.k].tag,x+12,y+1);
+    labels.push({k:it.k,x,y:y-ph/2,w:it.w,h:ph})}}
+ }
+ function hit(mx,my){for(const l of labels)if(mx>=l.x&&mx<=l.x+l.w&&my>=l.y&&my<=l.y+l.h)return l.k;return null}
+ function pick(mx,my){let best=null,bd=1e9;
+  for(let i=proj.length-1;i>=0;i--){const q=proj[i];if(q.Z<-.25)continue;const d=(q.X-mx)**2+(q.Y-my)**2;
+   if(d<(sc*.05)**2&&(best===null||q.Z>best.Z-.02)&&d<bd+2000){if(d<bd){bd=d;best=q}}}
+  return best&&best.p.k}
+ function pos(e){const r=cv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]}
+ cv.addEventListener("pointerdown",e=>{drag=true;moved=0;[lx,ly]=pos(e);cv.setPointerCapture(e.pointerId)});
+ cv.addEventListener("pointermove",e=>{const [mx,my]=pos(e);
+  if(drag){const dx=mx-lx,dy=my-ly;moved+=Math.abs(dx)+Math.abs(dy);yaw+=dx*.008;pit=Math.max(-.9,Math.min(.9,pit+dy*.006));lx=mx;ly=my;vy=0}
+  else{hov=hit(mx,my)||pick(mx,my);cv.style.cursor=hov?"pointer":"grab";
+   if(hov){tip.textContent=R[hov].name;tip.style.left=mx+14+"px";tip.style.top=my+14+"px";tip.style.opacity=1}else tip.style.opacity=0}});
+ cv.addEventListener("pointerup",e=>{drag=false;if(moved<6){const [mx,my]=pos(e),k=hit(mx,my)||pick(mx,my);if(k)show(k)}});
+ cv.addEventListener("pointerleave",()=>{hov=null;tip.style.opacity=0});
+ cv.addEventListener("keydown",e=>{if(e.key==="ArrowLeft"){yaw-=.15;vy=0}else if(e.key==="ArrowRight"){yaw+=.15;vy=0}else if(/^[1-7]$/.test(e.key))show(order[+e.key-1])});
+ const still=matchMedia("(prefers-reduced-motion:reduce)").matches;
+ (function loop(){if(!drag&&!still&&!hov)yaw+=vy||0.0035;draw();requestAnimationFrame(loop)})();
+})();
+
+/* ---------- fantasy garden ---------- */
+(function(){
+ const svg=document.getElementById("gsvg"),L=document.getElementById("plants"),NS="http://www.w3.org/2000/svg";
+ const cols=["#e0aaa4","#ecd27a","#bba9e6","#8fd6d2","#f3b7c8"];
+ const mk=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e};
+ let seed=7;const rnd=()=>(seed=(seed*9301+49297)%233280)/233280;
+ function flower(x,y,h,col,grow){
+  const g=mk("g",{class:"plant"+(grow?" grow":"")});
+  g.appendChild(mk("path",{d:`M${x} ${y}q-9 ${-h/2} 0 ${-h}`,stroke:"#86cfa9","stroke-width":3,fill:"none","stroke-linecap":"round"}));
+  const lf=mk("use",{href:"#lf",x:x-8,y:y-h*.5-22,width:18,height:36,class:"leafA",transform:`rotate(${rnd()<.5?-55:55} ${x} ${y-h*.45})`});g.appendChild(lf);
+  const f=mk("use",{href:"#fw",x:x-17,y:y-h-17,width:34,height:34});f.style.color=col;g.appendChild(f);
+  return g}
+ function toad(x,y,s){const u=mk("use",{href:"#ts",x:x-s/2,y:y-s+4,width:s,height:s,class:"toad"});return u}
+ for(let i=0;i<17;i++){const x=24+i*70+rnd()*34,y=262+rnd()*20;L.appendChild(flower(x,y,46+rnd()*78,cols[i%cols.length],false))}
+ [[110,278,34],[520,282,28],[860,276,36],[1070,280,30]].forEach(([x,y,s])=>L.appendChild(toad(x,y,s)));
+ const planted=[];
+ svg.addEventListener("pointerdown",e=>{
+  const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const p=pt.matrixTransform(svg.getScreenCTM().inverse());
+  const y=Math.max(238,Math.min(288,p.y<230?262:p.y));
+  const g=flower(p.x,y,40+Math.random()*70,cols[Math.floor(Math.random()*cols.length)],true);L.appendChild(g);planted.push(g);
+  if(planted.length>40)planted.shift().remove()});
+ // fireflies that follow the pointer
+ const cv=document.getElementById("gfly"),x=cv.getContext("2d");let W,H,F=[],mx=-1,my=-1;
+ function fit(){W=cv.width=cv.clientWidth;H=cv.height=cv.clientHeight;F=Array.from({length:18},()=>({x:Math.random()*W,y:H*.2+Math.random()*H*.7,a:Math.random()*6,v:.3+Math.random()*.5}))}
+ fit();addEventListener("resize",fit);
+ const gd=document.getElementById("garden");
+ gd.addEventListener("pointermove",e=>{const r=gd.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top});
+ gd.addEventListener("pointerleave",()=>{mx=-1});
+ const still=matchMedia("(prefers-reduced-motion:reduce)").matches;
+ (function f(t){x.clearRect(0,0,W,H);
+  for(const o of F){if(!still){o.a+=.02+Math.random()*.02;o.x+=Math.cos(o.a)*o.v;o.y+=Math.sin(o.a*1.2)*o.v;
+    if(mx>=0){o.x+=(mx-o.x)*.012;o.y+=(my-o.y)*.012}
+    if(o.x<0)o.x=W;if(o.x>W)o.x=0;if(o.y<10)o.y=10;if(o.y>H-10)o.y=H-10}
+   const al=.55+.4*Math.sin(t/500+o.a*2),g=x.createRadialGradient(o.x,o.y,0,o.x,o.y,11);
+   g.addColorStop(0,`rgba(255,238,160,${al})`);g.addColorStop(1,"rgba(255,238,160,0)");x.fillStyle=g;x.beginPath();x.arc(o.x,o.y,11,0,7);x.fill()}
+  requestAnimationFrame(f)})(0);
+})();
+</script>
+</body>
+</html>
